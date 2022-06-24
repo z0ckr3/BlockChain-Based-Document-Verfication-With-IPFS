@@ -14,4 +14,8 @@ In addition to, cost and time reductions by eliminating third-party.
 
 ![image](https://user-images.githubusercontent.com/49375052/175555389-c30d15c8-9389-4033-a2d7-2eb27ef0eb98.png)
 
+to get started
+run npm start
+
+
 
