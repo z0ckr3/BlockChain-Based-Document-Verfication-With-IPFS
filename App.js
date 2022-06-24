@@ -1,12 +1,9 @@
 //  On Polygon test
 // const CONTRACT_ADDRESS = "0x0446D98696f5f3F188F701692A615b935C85bf89";
-
 // On Mainnet
-// change this to your contract address & ABI
-//Youwill find the solidity smart contract in Contract Folder
-// Feel free to DM me on Telegram +9647711407487 @DevALoshe
 const CONTRACT_ADDRESS = "0x434e14686C05149dD4EBF5d1728a6611c917E19d";
-const polygonNetwork = 'https://polygon-rpc.com/';
+const Network = 'https://polygon-rpc.com/';
+const Block_Explore="https://polygonscan.com/"
 window.ABI =[
 	{
 		"anonymous": false,
@@ -276,7 +273,7 @@ window.onload = async () => {
         .html(`<i class="fa-solid fa-address-card mx-2 text-primary"></i>${truncateAddress(
         window.userAddress
       )}
-       <a class="text-info" href="https://polygonscan.com/address/${
+       <a class="text-info" href="${Block_Explore}/address/${
          window.userAddress
        }" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-square-arrow-up-right text-warning"></i></a>  
        </a>`);
@@ -318,7 +315,6 @@ function hide_txInfo() {
 function show_txInfo() {
   $(".transaction-status").removeClass("d-none");
 }
-//0x08210e8ED3e5b4fAED6D61D82Eb6Fd09d1cE5617,"University of Baghdad - Al-Khawarizmi College - Information and Communication Engineering Dep."
 async function get_ethBalance() {
   await web3.eth.getBalance(window.userAddress, function (err, balance) {
     if (err === null) {
@@ -337,12 +333,10 @@ if(window.ethereum) {
   })
 }
 
-//========================================//
 async function verify_Hash() {
-  document.getElementById("student-document").src="";   
   document.getElementById("loader").classList.remove("d-none");
  
-  const web3 = new Web3(new Web3.providers.HttpProvider(polygonNetwork));
+  const web3 = new Web3(new Web3.providers.HttpProvider(Network));
   const contract = new web3.eth.Contract(window.ABI,CONTRACT_ADDRESS);
 
   if (window.hashedfile) {
@@ -360,11 +354,10 @@ async function verify_Hash() {
       });
   }
 }
- 
+
 function printUploadInfo(result) {
-  console.log("got here");
   $("#transaction-hash").html(
-    '<a target="_blank" title="View Transaction at Polygon Scan" href="https://polygonscan.com/tx/' +
+    `<a target="_blank" title="View Transaction at Polygon Scan" href="${Block_Explore}/tx/` +
       result.transactionHash +
       '"+><i class="fa fa-check-circle font-size-2 mx-1 text-white mx-1"></i></a>' +
       truncateAddress(result.transactionHash)
@@ -407,12 +400,11 @@ function printUploadInfo(result) {
 }
 
 function print_info(result, is_verified) {
-  
+  document.getElementById("student-document").data="./files/undraw_feeling_blue_-4-b7q.svg";
   document.getElementById("loader").classList.add("d-none");
   console.log(result)
   // when document not verfied
   if (!is_verified) {
-    document.getElementById("student-document").src="./files/undraw_feeling_blue_-4-b7q.svg";
     document.getElementById("download-document").classList.add("d-none")
     $("#loader").addClass("d-none");
     $("#doc-status").html(`<h3 class="text-danger">
@@ -469,15 +461,13 @@ function print_info(result, is_verified) {
     $("#blockNumber").html(
       `<span class="text-info"><i class="fa-solid fa-cube"></i></span> ${result[0]}`
     );
-    document.getElementById("student-document").src="https://ipfs.io/ipfs/"+result[3];
-    document.getElementById("download-document").href=document.getElementById("student-document").src
+    document.getElementById("student-document").data="https://ipfs.io/ipfs/"+result[3];
+    document.getElementById("download-document").href=document.getElementById("student-document").data
     show_txInfo();
   }
 }
 
-//========================================//
 async function sendHash() {
-  
   $("#loader").removeClass("d-none");
   $("#upload_file_button").slideUp();
   $("#note").html(
@@ -574,7 +564,6 @@ async function deleteHash() {
       });
   }
 }
-//========================================//
 
 function getTime() {
   let d = new Date();
@@ -593,7 +582,6 @@ function getTime() {
   return a;
 }
 
-//========================================//
 
 async function get_ChainID() {
   let a =await web3.eth.getChainId();
@@ -629,10 +617,7 @@ async function get_ChainID() {
     document.getElementById("network").innerHTML = `<i class="text-info fa-solid fa-circle-nodes mx-2"></i>${window.chainID }`
   }
 }
-async function init_Ipfs(){
  
- 
-   }
 
 function get_Sha3() {
   hide_txInfo();
@@ -887,32 +872,31 @@ async function deleteExporter() {
   }
 }
 
- function generateQRCode(){
+function generateQRCode(){
   document.getElementById("qrcode").innerHTML="";
   console.log("making qr-code...")
-var qrcode = new QRCode(document.getElementById("qrcode"),
-{
-  colorDark : "#000",
-  colorLight : "#fff",
-  correctLevel : QRCode.CorrectLevel.H
-}
-);
+  var qrcode = new QRCode(document.getElementById("qrcode"),
+  {
+    colorDark : "#000",
+    colorLight : "#fff",
+    correctLevel : QRCode.CorrectLevel.H
+  }
+  );
    if (!window.hashedfile)  return;
-
-    // let url=`${window.location.host}/verify.html?hash=${window.hashedfile}`;
-    let url=`http://oriochain.netlify.app/verify.html?hash=${window.hashedfile}`;
+    let url=`${window.location.host}/verify.html?hash=${window.hashedfile}`;
     qrcode.makeCode(url);
     document.getElementById("download-link").download=document.getElementById("doc-file").files[0].name;
     document.getElementById("verfiy").href=window.location.protocol+"//"+url;
     
 
-   function makeDownload(){
+function makeDownload(){
     document.getElementById("download-link").href= document.querySelector("#qrcode img").src;
    } 
     setTimeout((makeDownload),500);
   //  makeDownload();
  }
 
+ 
 function checkURL(){
   let url_string = window.location.href ;
   let url = new URL(url_string);
@@ -956,13 +940,13 @@ function printTransactions(data, length) {
   document.querySelector(".tx-h5").classList.remove("d-none");
   for (let i = 0; i < length; i++) {
       const a = document.createElement("a");
-      a.href="https://polygonscan.com/tx/"+data[i].transactionHash;
+      a.href=`${Block_Explore}`+"/tx/"+data[i].transactionHash;
       a.setAttribute("target","_blank");
       a.className = "col-lg-3 col-md-4 col-sm-5 m-2  bg-dark text-light rounded position-relative card";
       a.style="overflow:hidden;"
-      const image = document.createElement("img");
-      image.style="position:absolute; left:0;width:100%;height: 100%;"
-      image.src = `https://ipfs.io/ipfs/${data[i].returnValues[1]}`;
+      const image = document.createElement("object");
+      image.style="width:100%;height: 100%;"
+      image.data = `https://ipfs.io/ipfs/${data[i].returnValues[1]}`;
       const num = document.createElement("h1");
       num.append(document.createTextNode(i+1));
       a.appendChild(image);
