@@ -1,4 +1,4 @@
-# Polygon-BlockChain-Based-Document-Verficationv
+# Polygon-BlockChain-Based-Document-Verfication with IPFS
 Overall, the project's aim is to establish an effective management system for the process of issuing and verifying educational documents 
 by using blockchain technology. Thus, improving accuracy and reduction forge by removing human involvement. 
 In addition to, cost and time reductions by eliminating third-party.
